@@ -31,7 +31,7 @@ void WrapUikit::StartIpc(const std::string & pipe_name)
 
 void WrapUikit::OnInitUikit(ccp_config *conf)
 {
-	libCCPClientInitialize(*conf);
+//	libCCPClientInitialize(*conf);
 	SetUikitCallback();
 }
 
@@ -52,19 +52,16 @@ void WrapUikit::SetUikitCallback()
 			IpcChannel::GetInstance().Send(CallbackRet::CloseClass);
 		};
 		callback->onEnterClassRoom = [](int error) {
+            std::cout<<"threadID: "<<std::this_thread::get_id()<<" enterclassRoom: "<<error<<std::endl;
 			LOG("error number " + std::to_string(error));
-			//		if (error == 200 || error==0)			//不再判断返回码，只要有回调，就认为成功
+			//		if (error == 200 || error==0)
 			{
 				IpcChannel::GetInstance().Send(CallbackRet::JoinClass);
 			}
 		};
 	}
-	
+    std::cout<<"setCallback threadId: "<<std::this_thread::get_id()<<std::endl;
 	libCCPSetCallBack(callback);
-	//auto fn = [=] {
-	//	libCCPSetCallBack(callback); 
-	//};
-	//this->push(fn);
 }
 
 long WrapUikit::OnEnterClassroom(ccp_authinfo* info)

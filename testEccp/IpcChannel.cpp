@@ -20,6 +20,7 @@ static const std::string reserver2 = "reserver2";
 static const std::string mainClassId = "mainClassId";
 static const std::string groupId = "groupId";
 static uv_async_t main_async;
+static char strArr[1024]={0};
 
 void IpcChannel::MessageRouter(const std::string & type, const Json::Value & data)
 {
@@ -50,7 +51,8 @@ void IpcChannel::MessageRouter(const std::string & type, const Json::Value & dat
 		Send(RecvConfig);
 	}
 	else if (type == "openClassroom")
-	{
+    {
+        Send(RecvOpenClass);
 		if (data.isString())
 		{
 			auto data_string = data.asString();
@@ -105,7 +107,6 @@ void IpcChannel::MessageRouter(const std::string & type, const Json::Value & dat
 				listener->OnEnterClassroom(info);
 			}
 		}
-		Send(RecvOpenClass);
 	}
 	else if (type == "closeClassroom")
 	{
@@ -149,16 +150,11 @@ void IpcChannel::SetListener(IpcListener * listener)
 	this->listener = listener;
 }
 
-typedef struct {
-    const char* first;
-    int len;
-}MyStr;
 void IpcChannel::Read(const std::string & content)
 {
-    MyStr str={};
-    str.first = content.c_str();
-    str.len = (int)content.length();
-    main_async.data = (void*)&str;
+    strcpy(strArr, content.c_str());
+    strArr[content.length()] = '\0';
+    main_async.data = (void*)strArr;
     uv_async_send(&main_async);
 }
 
@@ -171,16 +167,15 @@ void IpcChannel::Send(int value)
 	root["type"] = "data";
 	root["data"] = data;
 	const std::string out = Json::writeString(writer, root);
+    std::cout<<"send context: "<<out<<std::endl;
 	IpcService::Write(out+"\f");
 }
 
 static void mainAsyncCb(uv_async_t *handle)
 {
     std::cout<<"mainAsyncCb threadID: "<<std::this_thread::get_id()<<std::endl;
-    auto myStr = (MyStr*)handle;
-    std::string filterMessage {myStr->first,(size_t)myStr->len};
-
-    std::cout<<"mainAsyncCb content: "<<filterMessage.c_str()<<std::endl;
+    auto myStr = (char*)handle->data;
+    std::string filterMessage = myStr;
     size_t index = 0;
     do {
         index = filterMessage.find("\f");

@@ -46,6 +46,9 @@ namespace IpcService
 
 	void Write(const std::string& message)
 	{
+//        std::cout<<"************************************\n";
+//        std::cout<<"write threadID: "<<std::this_thread::get_id()<<"write content: "<<message<<std::endl;
+//        std::cout<<"************************************\n";
 		write_req_t *wr;
 		wr = (write_req_t*)malloc(sizeof *wr);
 		wr->buf = uv_buf_init(const_cast<char*>(message.c_str()), (unsigned int)message.length());
@@ -71,7 +74,6 @@ namespace IpcService
 			free(buf->base);
 			return;
 		}
-		std::cout << "receive context: " << buf->base << std::endl;
 		IpcChannel::GetInstance().Read(std::string(buf->base, nread));
 //		Write(std::string(buf->base, buf->len));
 	}

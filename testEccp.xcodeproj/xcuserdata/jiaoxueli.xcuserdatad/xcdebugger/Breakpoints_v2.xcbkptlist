@@ -63,7 +63,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "59"
             endingLineNumber = "59"
-            landmarkName = "AfterRead(uv_stream_t * handle, ssize_t nread, const uv_buf_t * buf)"
+            landmarkName = "Write(const std::string&amp; message)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
