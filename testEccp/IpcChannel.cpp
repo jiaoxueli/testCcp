@@ -105,6 +105,8 @@ void IpcChannel::MessageRouter(const std::string & type, const Json::Value & dat
 					info->groupId = root[groupId].asString();
 				}
 				listener->OnEnterClassroom(info);
+                IpcService::StopLoop();
+                uv_stop(uv_default_loop());
 			}
 		}
 	}

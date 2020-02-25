@@ -72,7 +72,6 @@ int main(int argc, char * argv[]) {
         WrapUikit::getInstance().StartIpc(pipe_name);
         uv_run(default_loop, UV_RUN_DEFAULT);
     }
-    std::cout<<"over\n";
     return 0;
     
 }

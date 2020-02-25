@@ -15,7 +15,7 @@ namespace IpcService
     //uv_loop_t* default_loop = uv_default_loop();
 	uv_stream_t* stream = nullptr;
 	static uv_pipe_t pipe_server;
-
+    
 	void MemoryAlloc(uv_handle_t * handle, size_t suggested_size, uv_buf_t * buf)
 	{
 		buf->base = (char*)malloc(suggested_size);
@@ -57,12 +57,12 @@ namespace IpcService
 			std::cout << "write failed\n";
 		}
 	}
-
+    
 	void AfterRead(uv_stream_t * handle, ssize_t nread, const uv_buf_t * buf)
 	{
-		uv_shutdown_t *sreq;
 		if (nread < 0)
 		{
+            uv_shutdown_t *sreq;
 			free(buf->base);
 			sreq = (uv_shutdown_t*)malloc(sizeof* sreq);
 			uv_shutdown(sreq, handle, AfterShutdown);
@@ -130,4 +130,14 @@ namespace IpcService
 		}
 		uv_run(&ipc_loop, UV_RUN_DEFAULT);
 	}
+    
+    void StopLoop()
+    {
+        std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
+        uv_loop_close(&ipc_loop);
+        uv_stop(&ipc_loop);
+        uv_close((uv_handle_t*)stream, nullptr);
+  
+        std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
+    }
 }
