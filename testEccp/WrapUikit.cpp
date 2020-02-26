@@ -71,7 +71,7 @@ long WrapUikit::OnEnterClassroom(ccp_authinfo* info)
 #else
     int argc=0;
     char* argv[]={(char*)"123",(char*)""};
-    libEnterLiveClassRoomForMac(argc, argv, nullptr);
+    libEnterLiveClassRoomForMac(argc, argv, info);
 #endif
     return 0;
 }

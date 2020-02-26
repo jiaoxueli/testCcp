@@ -4,6 +4,10 @@
 #include <future>
 #include <uv.h>
 #include <iostream>
+#include "common.h"
+#include <mutex>
+#include <condition_variable>
+
 
 static const std::string account = "account";
 static const std::string appId = "appId";
@@ -21,6 +25,10 @@ static const std::string mainClassId = "mainClassId";
 static const std::string groupId = "groupId";
 static uv_async_t main_async;
 static char strArr[1024]={0};
+
+static std::mutex mu;
+static std::condition_variable cv;
+bool isFinished = true;
 
 void IpcChannel::MessageRouter(const std::string & type, const Json::Value & data)
 {
@@ -154,10 +162,18 @@ void IpcChannel::SetListener(IpcListener * listener)
 
 void IpcChannel::Read(const std::string & content)
 {
+    std::cout<<"read content: "<<content<<std::endl<<"";
+    std::unique_lock<std::mutex> lock(mu);
+    cv.wait(lock,[]{return isFinished;});
+    isFinished = false;
+
+    LOG(content);
     strcpy(strArr, content.c_str());
     strArr[content.length()] = '\0';
     main_async.data = (void*)strArr;
     uv_async_send(&main_async);
+    
+    lock.unlock();
 }
 
 void IpcChannel::Send(int value)
@@ -170,6 +186,7 @@ void IpcChannel::Send(int value)
 	root["data"] = data;
 	const std::string out = Json::writeString(writer, root);
     std::cout<<"send context: "<<out<<std::endl;
+    LOG(out);
 	IpcService::Write(out+"\f");
 }
 
@@ -177,7 +194,12 @@ static void mainAsyncCb(uv_async_t *handle)
 {
     std::cout<<"mainAsyncCb threadID: "<<std::this_thread::get_id()<<std::endl;
     auto myStr = (char*)handle->data;
+    LOG(myStr);
     std::string filterMessage = myStr;
+//    if(myStr != nullptr)
+//    {
+//        delete [] myStr;
+//    }
     size_t index = 0;
     do {
         index = filterMessage.find("\f");
@@ -205,6 +227,12 @@ static void mainAsyncCb(uv_async_t *handle)
         }
         filterMessage = filterMessage.substr(index + 1, filterMessage.length());
     } while (index != std::string::npos);
+    
+    
+    std::lock_guard<std::mutex> gd(mu);
+    isFinished = true;
+    cv.notify_one();
+
 }
 
 void IpcChannel::InitIpc(const std::string & pipe_name)

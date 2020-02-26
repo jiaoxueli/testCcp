@@ -22,6 +22,7 @@ std::string Logger::getAppdata()
 		return std::string();
 	}
 #else
+    return "/tmp";
 #endif
     return std::string();
 }

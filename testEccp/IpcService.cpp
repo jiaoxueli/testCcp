@@ -5,6 +5,7 @@
 
 namespace IpcService 
 {
+    bool isStop = false;
 	typedef struct 
 	{
 		uv_write_t req;
@@ -14,7 +15,7 @@ namespace IpcService
 	static uv_loop_t ipc_loop;
     //uv_loop_t* default_loop = uv_default_loop();
 	uv_stream_t* stream = nullptr;
-	static uv_pipe_t pipe_server;
+	//uv_pipe_t pipe_server;
     
 	void MemoryAlloc(uv_handle_t * handle, size_t suggested_size, uv_buf_t * buf)
 	{
@@ -101,6 +102,7 @@ namespace IpcService
 	void StartIpcService(const std::string& pipe_name)
 	{
         std::cout<<"ipcStart threadID: "<<std::this_thread::get_id()<<std::endl;
+        uv_pipe_t pipe_server;
 		uv_loop_init(&ipc_loop);
         std::string tmp_pipe_name = "";
 #ifdef _WIN32
@@ -123,7 +125,7 @@ namespace IpcService
 			std::cout << "uv_pipe_bind: " << uv_strerror(r) << std::endl;
 			return;
 		}
-		r = uv_listen((uv_stream_t*)&pipe_server, SOMAXCONN, OnConnection);
+		r = uv_listen((uv_stream_t*)&pipe_server, 1, OnConnection);
 		if (r)
 		{
 			std::cout << "listen error " << uv_err_name(r) << std::endl;
@@ -136,8 +138,8 @@ namespace IpcService
         std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
         uv_loop_close(&ipc_loop);
         uv_stop(&ipc_loop);
-        uv_close((uv_handle_t*)stream, nullptr);
-  
+        if(!uv_is_closing((uv_handle_t*)stream))
+            uv_close((uv_handle_t*)stream, nullptr);
         std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
     }
 }

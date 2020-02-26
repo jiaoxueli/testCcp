@@ -12,6 +12,7 @@
 #include <cxxopts.hpp>
 #include "WrapUikit.h"
 #include <uv.h>
+#include "common.h"
 
 int main(int argc, char * argv[]) {
 
@@ -55,7 +56,7 @@ int main(int argc, char * argv[]) {
     }
     if (result.count("d") > 0)
     {
-        //Util::isWriteLog(true);
+        Util::isWriteLog(true);
     }
     //else
     //{
