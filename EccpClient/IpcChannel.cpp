@@ -24,6 +24,7 @@ static const std::string reserver2 = "reserver2";
 static const std::string mainClassId = "mainClassId";
 static const std::string groupId = "groupId";
 static uv_async_t main_async;
+static uv_async_t work_async;
 static char strArr[1024]={0};
 
 static std::mutex mu;
@@ -113,7 +114,7 @@ void IpcChannel::MessageRouter(const std::string & type, const Json::Value & dat
 					info->groupId = root[groupId].asString();
 				}
 				listener->OnEnterClassroom(info);
-                IpcService::StopLoop();
+                uv_async_send(&work_async);
                 uv_stop(uv_default_loop());
 			}
 		}
@@ -196,10 +197,6 @@ static void mainAsyncCb(uv_async_t *handle)
     auto myStr = (char*)handle->data;
     LOG(myStr);
     std::string filterMessage = myStr;
-//    if(myStr != nullptr)
-//    {
-//        delete [] myStr;
-//    }
     size_t index = 0;
     do {
         index = filterMessage.find("\f");
@@ -239,7 +236,8 @@ void IpcChannel::InitIpc(const std::string & pipe_name)
 {
     std::cout<<"InitIpc threadId: "<<std::this_thread::get_id()<<std::endl;
     uv_async_init(uv_default_loop(), &main_async, mainAsyncCb);
+    
     ipc_thread = std::make_unique<std::thread>([pipe_name]{
-        IpcService::StartIpcService(pipe_name);
+        IpcService::StartIpcService(pipe_name,  &work_async);
     });
 }

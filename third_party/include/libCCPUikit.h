@@ -102,10 +102,6 @@ extern "C"
 	CCP_CALL_API void libCheckMachine(onCheckMachine);
 
     CCP_CALL_API CCPWindowHandle libGetMainWindow();
-    
-#ifdef __APPLE__
-    CCP_CALL_API int libEnterLiveClassRoomForMac(int argc, char* argv[], ccp_authinfo *auth);
-#endif
 
 #ifdef __cplusplus
 }

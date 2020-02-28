@@ -289,7 +289,8 @@
 		07A0628F2403747A0011134F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application: New Oriental Xuncheng Network Technology CO.Ltd (66X9PJVZ92)";
+				CODE_SIGN_STYLE = Manual;
 				DYLIB_INSTALL_NAME_BASE = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -298,8 +299,8 @@
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/third_party/include";
 				LD_DYLIB_INSTALL_NAME = "";
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
+					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -313,18 +314,19 @@
 		07A062902403747A0011134F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application: New Oriental Xuncheng Network Technology CO.Ltd (66X9PJVZ92)";
+				CODE_SIGN_STYLE = Manual;
 				DYLIB_INSTALL_NAME_BASE = "";
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/third_party/include";
 				LD_DYLIB_INSTALL_NAME = "";
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
+					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/third_party",
-					"$(PROJECT_DIR)/third_party/lib/debug",
+					"$(PROJECT_DIR)/third_party/lib/release",
 				);
 				PRODUCT_NAME = ECCPClient;
 			};

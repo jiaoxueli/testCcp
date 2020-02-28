@@ -31,7 +31,7 @@ void WrapUikit::StartIpc(const std::string & pipe_name)
 
 void WrapUikit::OnInitUikit(ccp_config *conf)
 {
-//	libCCPClientInitialize(*conf);
+	libCCPClientInitialize(*conf);
 	SetUikitCallback();
 }
 
@@ -66,13 +66,13 @@ void WrapUikit::SetUikitCallback()
 
 long WrapUikit::OnEnterClassroom(ccp_authinfo* info)
 {
-#ifdef __WIN32
+//#ifdef __WIN32
     libEnterClassRoom(info);
-#else
-    int argc=0;
-    char* argv[]={(char*)"123",(char*)""};
-    libEnterLiveClassRoomForMac(argc, argv, info);
-#endif
+//#else
+//    int argc=0;
+//    char* argv[]={(char*)"123",(char*)""};
+//    libEnterLiveClassRoomForMac(argc, argv, info);
+//#endif
     return 0;
 }
 

@@ -5,17 +5,14 @@
 
 namespace IpcService 
 {
-    bool isStop = false;
 	typedef struct 
 	{
 		uv_write_t req;
 		uv_buf_t buf;
 	} write_req_t;
 
-	static uv_loop_t ipc_loop;
-    //uv_loop_t* default_loop = uv_default_loop();
+	uv_loop_t ipc_loop;
 	uv_stream_t* stream = nullptr;
-	//uv_pipe_t pipe_server;
     
 	void MemoryAlloc(uv_handle_t * handle, size_t suggested_size, uv_buf_t * buf)
 	{
@@ -98,8 +95,18 @@ namespace IpcService
 		}
 		r = uv_read_start(stream, MemoryAlloc, AfterRead);
 	}
+    
+    void StopLoop(uv_async_t* handle)
+    {
+        std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
+        uv_loop_close(&ipc_loop);
+        uv_stop(&ipc_loop);
+        if(!uv_is_closing((uv_handle_t*)stream))
+            uv_close((uv_handle_t*)stream, nullptr);
+        std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
+    }
 
-	void StartIpcService(const std::string& pipe_name)
+	void StartIpcService(const std::string& pipe_name , void* async)
 	{
         std::cout<<"ipcStart threadID: "<<std::this_thread::get_id()<<std::endl;
         uv_pipe_t pipe_server;
@@ -110,7 +117,9 @@ namespace IpcService
 #else
         tmp_pipe_name = pipe_name;
 #endif
-
+        
+        uv_async_init(&ipc_loop, (uv_async_t*)async, StopLoop);
+        
 		std::cout << "start service\n";
 		int r;
 		r = uv_pipe_init(&ipc_loop, &pipe_server, 0);
@@ -132,14 +141,5 @@ namespace IpcService
 		}
 		uv_run(&ipc_loop, UV_RUN_DEFAULT);
 	}
-    
-    void StopLoop()
-    {
-        std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
-        uv_loop_close(&ipc_loop);
-        uv_stop(&ipc_loop);
-        if(!uv_is_closing((uv_handle_t*)stream))
-            uv_close((uv_handle_t*)stream, nullptr);
-        std::cout<<"loop count "<<uv_loop_alive(&ipc_loop)<<std::endl;
-    }
+
 }
