@@ -64,7 +64,7 @@
 		07A0627E2403747A0011134F = {
 			isa = PBXGroup;
 			children = (
-				07A062892403747A0011134F /* testEccp */,
+				07A062892403747A0011134F /* ECCPClient */,
 				07A062882403747A0011134F /* Products */,
 				07A06291240374B60011134F /* Frameworks */,
 			);
@@ -78,7 +78,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		07A062892403747A0011134F /* testEccp */ = {
+		07A062892403747A0011134F /* ECCPClient */ = {
 			isa = PBXGroup;
 			children = (
 				07A062A324038ED30011134F /* common.cpp */,
@@ -95,7 +95,7 @@
 				07A062AA24038ED30011134F /* WrapUikit.h */,
 				07A0628A2403747A0011134F /* main.cpp */,
 			);
-			path = testEccp;
+			path = ECCPClient;
 			sourceTree = "<group>";
 		};
 		07A06291240374B60011134F /* Frameworks */ = {
@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		07A062862403747A0011134F /* testEccp */ = {
+		07A062862403747A0011134F /* ECCPClient */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 07A0628E2403747A0011134F /* Build configuration list for PBXNativeTarget "testEccp" */;
+			buildConfigurationList = 07A0628E2403747A0011134F /* Build configuration list for PBXNativeTarget "ECCPClient" */;
 			buildPhases = (
 				07A062832403747A0011134F /* Sources */,
 				07A062842403747A0011134F /* Frameworks */,
@@ -122,7 +122,7 @@
 			);
 			dependencies = (
 			);
-			name = testEccp;
+			name = ECCPClient;
 			productName = testEccp;
 			productReference = 07A062872403747A0011134F /* ECCPClient */;
 			productType = "com.apple.product-type.tool";
@@ -141,7 +141,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 07A062822403747A0011134F /* Build configuration list for PBXProject "testEccp" */;
+			buildConfigurationList = 07A062822403747A0011134F /* Build configuration list for PBXProject "ECCPClient" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -153,7 +153,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				07A062862403747A0011134F /* testEccp */,
+				07A062862403747A0011134F /* ECCPClient */,
 			);
 		};
 /* End PBXProject section */
@@ -289,7 +289,7 @@
 		07A0628F2403747A0011134F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: New Oriental Xuncheng Network Technology CO.Ltd (66X9PJVZ92)";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				DYLIB_INSTALL_NAME_BASE = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -314,7 +314,7 @@
 		07A062902403747A0011134F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: New Oriental Xuncheng Network Technology CO.Ltd (66X9PJVZ92)";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				DYLIB_INSTALL_NAME_BASE = "";
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/third_party/include";
@@ -335,7 +335,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		07A062822403747A0011134F /* Build configuration list for PBXProject "testEccp" */ = {
+		07A062822403747A0011134F /* Build configuration list for PBXProject "ECCPClient" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07A0628C2403747A0011134F /* Debug */,
@@ -344,7 +344,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		07A0628E2403747A0011134F /* Build configuration list for PBXNativeTarget "testEccp" */ = {
+		07A0628E2403747A0011134F /* Build configuration list for PBXNativeTarget "ECCPClient" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07A0628F2403747A0011134F /* Debug */,
